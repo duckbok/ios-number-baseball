@@ -61,24 +61,46 @@ struct NumberBaseball {
     }
     
     func isValidMenuInput(userInput: String?) -> Bool {
-        guard let _userInput: String = userInput else { return false }
-        guard let userMenuInput: Int = Int(_userInput) else { return false }
+        guard let _userInput: String = userInput else {
+            print(Message.inputError.rawValue)
+            return false
+        }
+        guard let userMenuInput: Int = Int(_userInput) else {
+            print(Message.inputError.rawValue)
+            return false
+        }
         
         switch userMenuInput {
         case 1: return true
         case 2: exit(0)
-        default: return false
+        default:
+            print(Message.inputError.rawValue)
+            return false
         }
     }
     
     func isValidGameInput(userInput: String?) -> Bool {
-        guard let userGameInputs: [Int] = getIntArray(from: userInput, separatedBy: " ") else { return false }
-        
-        if userGameInputs.count != 3 { return false }
-        for userGameInput in userGameInputs {
-            if !(1...9).contains(userGameInput) { return false }
+        guard let userGameInputs: [Int] = getIntArray(from: userInput, separatedBy: " ") else {
+            print(Message.inputError.rawValue)
+            return false
         }
-        if isDuplicated(userGameInputs) { return false }
+        
+        if userGameInputs.count != 3 {
+            print(Message.inputError.rawValue)
+            return false
+        }
+        
+        for userGameInput in userGameInputs {
+            if !(1...9).contains(userGameInput) {
+                print(Message.inputError.rawValue)
+                return false
+            }
+        }
+        
+        if isDuplicated(userGameInputs) {
+            print(Message.inputError.rawValue)
+            return false
+        }
         
         return true
     }
