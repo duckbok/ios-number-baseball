@@ -121,31 +121,36 @@ struct NumberBaseball {
     }
     
     func printGameResult(_ userAnswers: [Int], _ gameResult: [Int]) {
-        print("임의의 수 : \(userAnswers[0]) \(userAnswers[1]) \(userAnswers[2])")
-        
-        if isComputerWin() {
-            print("컴퓨터 승리...!")
-        }
-        
         print("\(gameResult[0]) 스트라이크, \(gameResult[1]) 볼")
         
         if isUserWin(strikeCount: gameResult[0]) {
             print("사용자 승리!")
-            gameCount = 0
+            gameCount = 9
         } else {
             print("남은 기회 : \(gameCount)")
+        }
+        
+        if isComputerWin() {
+            print("컴퓨터 승리...!")
+            gameCount = 9
         }
     }
     
     func startGame() {
-        let userAnswers: [Int] = generateRandomAnswers()
+        var userInput: String?
         
         if gameCount == 9 {
-            getUserInput(toPrint: Message.gameMenu)
             computerAnswers = generateRandomAnswers()
+            
+            repeat {
+                userInput = getUserInput(toPrint: Message.gameMenu)
+            } while false == isValidMenuInput(userInput: userInput)
         }
         
-        getUserInput(toPrint: Message.inputAnswer)
+        repeat {
+            userInput = getUserInput(toPrint: Message.inputAnswer)
+        } while false == isValidGameInput(userInput: userInput)
+        guard let userAnswers = getIntArray(from: userInput, separatedBy: " ") else { return startGame() }
         
         gameCount -= 1
         let gameResult: [Int] = getGameResult(userAnswers)
